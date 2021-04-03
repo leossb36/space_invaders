@@ -1,3 +1,4 @@
+package game.display;
 
 
 public final class Game {

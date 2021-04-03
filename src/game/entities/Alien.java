@@ -1,5 +1,8 @@
+package game.entities;
 import java.util.ArrayList;
 import java.util.List;
+
+import game.display.Game;
 
 public class Alien extends Sprite {
     
@@ -11,13 +14,13 @@ public class Alien extends Sprite {
 		super(x,y);
 		
 		loadImage(image);
-		visible = true;	
+		isVisible = true;	
 	}
 	
 	public void movementAlien(){
-		this.y += SPEED;	
-    	if((y + width >= Game.getHeight())){
-    		visible = false;
+		this.positionY += SPEED;	
+    	if((positionX + sizeWidth > Game.getHeight())){
+    		isVisible = false;
     	}
 	}
 	
@@ -33,10 +36,10 @@ public class Alien extends Sprite {
 		return aliens;
 	}
 	public int getX() {
-		return x;
+		return positionX;
 	}
 
 	public int getY() {
-		return y;
+		return positionY;
 	}
 }

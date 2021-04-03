@@ -1,15 +1,16 @@
+package game.entities;
+import game.display.Game;
 
 public class Missile extends Sprite {
-	
-	
     
+	private static final String MISSILE_IMAGE = "images/lazer.png";
     private static final int SPEED = 2;
         
     private boolean isVisible;
     
     
-    public Missile(int x, int y) {
-        super(x, y);
+    public Missile(int posX, int posY) {
+        super(posX, posY);
         
         initMissile();
         
@@ -23,11 +24,12 @@ public class Missile extends Sprite {
     }
     
     private void imageMissile(){
-        loadImage("images/lazer.png"); 
+        loadImage(MISSILE_IMAGE); 
     }
-    public void move(){
-    	this.y -= SPEED;
-    	if(this.y > Game.getHeight())
+    public void missileMoviment(){
+    	this.positionY -= SPEED;
+    	
+    	if(this.positionY > Game.getHeight())
     		isVisible = false;
     }
     	
@@ -41,12 +43,12 @@ public class Missile extends Sprite {
 	}
     @Override
 	public int getX() {
-		return x;
+		return positionX;
 	}
 
     @Override
 	public int getY() {
-		return y;
+		return positionY;
 	}
     
 }

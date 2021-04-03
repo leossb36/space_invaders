@@ -1,5 +1,8 @@
+package game.entities;
 import java.util.ArrayList;
 import java.util.List;
+
+import game.display.Game;
 
 public class Bonus extends Sprite {
 	
@@ -11,10 +14,10 @@ public class Bonus extends Sprite {
 		
 	}
 	public void bonusMoviment(){
-		this.y += SPEEDBONUS;
+		this.positionY += SPEEDBONUS;
 		
-		if((y + width >= Game.getHeight()))
-    		visible = false;
+		if((positionY + sizeHeight >= Game.getHeight()))
+    		isVisible = false;
 	}
 	public List<Bonus> bonus = new ArrayList<Bonus>();
 	
@@ -22,10 +25,10 @@ public class Bonus extends Sprite {
 		return bonus;
 	}
 	public int getX(){
-		return x;
+		return positionX;
 	}
 	public int getY(){
-		return y;
+		return positionY;
 	}
 }
 

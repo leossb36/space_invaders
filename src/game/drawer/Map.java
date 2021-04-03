@@ -1,3 +1,4 @@
+package game.drawer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
@@ -18,6 +19,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import game.display.Game;
+import game.entities.Alien;
+import game.entities.Bonus;
+import game.entities.Missile;
+import game.entities.Spaceship;
+import game.transitions.Level;
 
 
 public class Map extends JPanel implements ActionListener {
@@ -263,7 +271,7 @@ public class Map extends JPanel implements ActionListener {
 		for (int i = 0; i < missile.size(); i++) {
 			Missile m = (Missile) missile.get(i);
 			if (m.isVisible()) {
-				m.move();
+				m.missileMoviment();
 			} else {
 				missile.remove(i);
 			}
