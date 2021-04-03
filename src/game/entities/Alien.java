@@ -35,6 +35,7 @@ public class Alien extends Sprite {
 	public List<Alien> getAliens() {
 		return aliens;
 	}
+
 	public int getX() {
 		return positionX;
 	}

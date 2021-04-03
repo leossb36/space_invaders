@@ -1,66 +1,65 @@
 package game.entities;
 
-
 import java.awt.Rectangle;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public abstract class Sprite {
 
-    protected int positionX;
-    protected int positionY;
-    protected int sizeWidth;
-    protected int sizeHeight;
-    protected boolean isVisible;
-    protected Image imageRepresentation;
+	protected int positionX;
+	protected int positionY;
+	protected int sizeWidth;
+	protected int sizeHeight;
+	protected boolean isVisible;
+	protected Image imageRepresentation;
 
-    public Sprite(int posX, int posY) {
-        this.positionX = posX;
-        this.positionY = posY;
-        this.isVisible = true;
-    }
+	public Sprite(int posX, int posY) {
+		this.positionX = posX;
+		this.positionY = posY;
+		this.isVisible = true;
+	}
 
-    protected void loadImage(String imageName) {
+	protected void loadImage(String imageName) {
 
-        ImageIcon imageIcon = new ImageIcon(imageName);
-        imageRepresentation = imageIcon.getImage();
-        getImageDimensions();
-    }
-    
-    protected void getImageDimensions() {
-    	sizeWidth = imageRepresentation.getWidth(null);
-    	sizeHeight = imageRepresentation.getHeight(null);
-    }    
+		ImageIcon imageIcon = new ImageIcon(imageName);
+		imageRepresentation = imageIcon.getImage();
+		getImageDimensions();
+	}
 
-    public Image getImage() {
-        return imageRepresentation;
-    }
+	protected void getImageDimensions() {
+		sizeWidth = imageRepresentation.getWidth(null);
+		sizeHeight = imageRepresentation.getHeight(null);
+	}
 
-    public int getX() {
-        return positionX;
-    }
+	public Image getImage() {
+		return imageRepresentation;
+	}
 
-    public int getY() {
-        return positionY;
-    }
-    
-    public int getWidth(){
-        return sizeWidth;
-    }
-    
-    public int getHeight(){
-        return sizeHeight;
-    }
+	public int getX() {
+		return positionX;
+	}
 
-    public boolean isVisible() {
-        return isVisible;
-    }
+	public int getY() {
+		return positionY;
+	}
 
-    public void setVisible(Boolean enable) {
-    	this.isVisible = enable;
-    }
-    
-    public Rectangle getBounds() {
-        return new Rectangle(positionX, positionY, sizeWidth, sizeHeight);
-    }
+	public int getWidth() {
+		return sizeWidth;
+	}
+
+	public int getHeight() {
+		return sizeHeight;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(Boolean enable) {
+		this.isVisible = enable;
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(positionX, positionY, sizeWidth, sizeHeight);
+	}
 }
