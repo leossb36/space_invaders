@@ -4,8 +4,8 @@ import java.util.Optional;
 
 public enum Level {
 
-	EASY(6000, 10, 5000, 1, "images/alien_EASY.png"), MEDIUM(6000, 25, 5000, 2, "images/alien_MEDIUM.png"),
-	HARD(6000, 50, 5000, 3, "images/alien_HARD.png");
+	EASY(6000, 10, 5000, 1, "images/alien_easy.png"), MEDIUM(6000, 25, 5000, 2, "images/alien_medium.png"),
+	HARD(6000, 50, 5000, 3, "images/alien_hard.png");
 
 	private final int alienTime, alienCount;
 	private final int bonusTime, bonusCount;

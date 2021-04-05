@@ -8,12 +8,12 @@ import game.display.Game;
 
 public class Spaceship extends Sprite {
 
-	static final String SPACESHIP_IMAGE_NOTHRUST = "images/spaceshipnew_nothrust.png";
-	static final String SPACESHIP_IMAGE = "images/spaceshipnew_nothrust.png";
+	static final String SPACESHIP_IMAGE_NOTHRUST = "images/spaceship_nothrust.png";
+	static final String SPACESHIP_IMAGE = "images/spaceship_on.png";
+	static final String HEALTH_SPACESHIP_IMAGE = "images/life.png";
 	private static final int MAX_SPEED_X = 2;
 	private static final int MAX_SPEED_Y = 1;
 	private boolean isVisible;
-	private int health = 3;
 	private int score;
 
 	private List<Missile> missiles;
@@ -52,7 +52,7 @@ public class Spaceship extends Sprite {
 	}
 
 	private Missile renderMissileWhileShooting() {
-		Missile missile = new Missile(positionX + sizeWidth / 2, positionY);
+		Missile missile = new Missile(positionX + sizeWidth / 10, positionY);
 
 		return missile;
 	}
@@ -63,14 +63,6 @@ public class Spaceship extends Sprite {
 
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setLife(int i) {
-		this.health = i;
 	}
 
 	public int getScore() {

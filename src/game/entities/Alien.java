@@ -1,46 +1,40 @@
 package game.entities;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import game.display.Game;
 
 public class Alien extends Sprite {
-    
-	public static final int SPEED = 1;
-	public boolean explosion;
-	
-	
-	public Alien(int x, int y, String image) {
-		super(x,y);
-		
+
+	private List<Alien> alienList = new ArrayList<Alien>();
+	private int alien_speed = 1;
+
+
+	public Alien(int posX, int posY, String image) {
+		super(posX, posY);
+
 		loadImage(image);
-		isVisible = true;	
+		isVisible = true;
 	}
-	
-	public void movementAlien(){
-		this.positionY += SPEED;	
-    	if((positionX + sizeWidth > Game.getHeight())){
-    		isVisible = false;
-    	}
-	}
-	
-	public synchronized void alienExplosion(){
-		loadImage("images/explosion.png");
-		explosion = true;
-	}
-	
-	public List<Alien> aliens = new ArrayList<Alien>();
 
-	
+	public void movementAlien() {
+		this.positionY += alien_speed;
+		if ((positionX + sizeWidth > Game.getHeight())) {
+			isVisible = false;
+		}
+	}
+
 	public List<Alien> getAliens() {
-		return aliens;
+		return alienList;
+	}
+	
+	public void setAlienSpeed(int value) {
+		this.alien_speed = value;
+	}
+	
+	public int getAlienSpeed() {
+		return alien_speed;
 	}
 
-	public int getX() {
-		return positionX;
-	}
-
-	public int getY() {
-		return positionY;
-	}
 }

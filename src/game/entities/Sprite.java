@@ -11,7 +11,9 @@ public abstract class Sprite {
 	protected int sizeWidth;
 	protected int sizeHeight;
 	protected boolean isVisible;
+	protected boolean inCollision;
 	protected Image imageRepresentation;
+	private static final String EXPLOSION_ANIMATION = "images/explosion.gif";
 
 	public Sprite(int posX, int posY) {
 		this.positionX = posX;
@@ -53,6 +55,10 @@ public abstract class Sprite {
 
 	public boolean isVisible() {
 		return isVisible;
+	}
+
+	public void isBlowingUp() {
+		loadImage(EXPLOSION_ANIMATION);
 	}
 
 	public void setVisible(Boolean enable) {

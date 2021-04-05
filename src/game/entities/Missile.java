@@ -4,7 +4,7 @@ import game.display.Game;
 
 public class Missile extends Sprite {
 
-	private static final String MISSILE_IMAGE = "images/lazer.png";
+	private static final String MISSILE_IMAGE = "images/shot.png";
 	private static final int SPEED = 2;
 
 	private boolean isVisible;
