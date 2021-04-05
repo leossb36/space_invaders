@@ -16,7 +16,7 @@ public class Spaceship extends Sprite {
 	private boolean isVisible;
 	private int score;
 
-	private List<Missile> missiles;
+	private List<Laser> missiles;
 
 	private int speed_x; // speed of spaceship in horizontal
 	private int speed_y; // speed of spaceship in vertical
@@ -29,7 +29,7 @@ public class Spaceship extends Sprite {
 
 	private void initSpaceShip() {
 
-		missiles = new ArrayList<Missile>();
+		missiles = new ArrayList<Laser>();
 
 		noThrust();
 
@@ -43,7 +43,7 @@ public class Spaceship extends Sprite {
 		loadImage(SPACESHIP_IMAGE);
 	}
 
-	public List<Missile> getMissile() {
+	public List<Laser> getMissile() {
 		return missiles;
 	}
 
@@ -51,8 +51,8 @@ public class Spaceship extends Sprite {
 		this.missiles.add(renderMissileWhileShooting());
 	}
 
-	private Missile renderMissileWhileShooting() {
-		Missile missile = new Missile(positionX + sizeWidth / 10, positionY);
+	private Laser renderMissileWhileShooting() {
+		Laser missile = new Laser(positionX + sizeWidth / 10, positionY);
 
 		return missile;
 	}

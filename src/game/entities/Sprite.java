@@ -68,4 +68,5 @@ public abstract class Sprite {
 	public Rectangle getBounds() {
 		return new Rectangle(positionX, positionY, sizeWidth, sizeHeight);
 	}
+
 }

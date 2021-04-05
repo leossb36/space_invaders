@@ -23,40 +23,51 @@ import javax.swing.Timer;
 
 import game.display.Game;
 import game.entities.Alien;
-import game.entities.Bonus;
+import game.entities.Benefits;
 import game.entities.Life;
-import game.entities.Missile;
+import game.entities.Laser;
 import game.entities.Spaceship;
 import game.transitions.Level;
 
 public class Map extends JPanel implements ActionListener {
 
-	private final int SPACESHIP_X = Game.getWidth()/2;
-	private final int SPACESHIP_Y = Game.getHeight() - Game.getHeight()/5;
-	private final Timer timer_map;
+	private final int SPACESHIP_X = Game.getWidth() / 2;
+	private final int SPACESHIP_Y = Game.getHeight() - Game.getHeight() / 5;
 	
-	private static final String SPACEBACKGROUND= "images/space.jpg";
+	private Image background;
+	private boolean inGame;
+
+	private static final String SPACEBACKGROUND = "images/space.jpg";
 	private static final String LIFESPACESHIP = "images/life.png";
-	
-	private final Image background;
+
 	private Spaceship spaceship;
 	private Life lifeSpaceship;
-	private boolean inGame;
+	private Alien aliensList;
+	private Laser laserList;
+	private Benefits benefitsList;
+
 	private Level level = Level.EASY;
-	private Alien aliens;
+	
 	private Timer timer_aliens;
-	private List<Bonus> bonus;
 	private Timer timer_bonus;
+	private Timer timer_map;
+	
+	public Map() {		
+		setUp();
+		initInstances();
 
-	public Map() {
-
+	}
+	
+	private void setUp() {
 		addKeyListener(new KeyListerner());
-
 		setFocusable(true);
 		setDoubleBuffered(true);
 		ImageIcon image = new ImageIcon(SPACEBACKGROUND);
 		this.background = image.getImage();
 		inGame = true;
+	}
+	
+	private void initInstances() {
 		spaceship = new Spaceship(SPACESHIP_X, SPACESHIP_Y);
 		lifeSpaceship = new Life(0, 0, LIFESPACESHIP);
 
@@ -78,40 +89,39 @@ public class Map extends JPanel implements ActionListener {
 		Toolkit.getDefaultToolkit().sync();
 	}
 
-	private void draw(Graphics g) {
+	private void draw(Graphics gameDraw) {
 		// Draw spaceship
-		g.drawImage(spaceship.getImage(), spaceship.getX(), spaceship.getY(), this);
+		gameDraw.drawImage(spaceship.getImage(), spaceship.getX(), spaceship.getY(), this);
 
 		// Draw Bullet
-		List<Missile> missile = spaceship.getMissile();
+		List<Laser> missile = spaceship.getMissile();
 		for (int i = 0; i < missile.size(); i++) {
-			Missile m = (Missile) missile.get(i);
-			g.drawImage(m.getImage(), m.getX(), m.getY(), this);
+			Laser m = (Laser) missile.get(i);
+			gameDraw.drawImage(m.getImage(), m.getX(), m.getY(), this);
 		}
 
 		// Draw Alien
-		for (int i = 0; i < aliens.size(); i++) {
-			Alien a = aliens.get(i);
-			g.drawImage(a.getImage(), a.getX(), a.getY(), this);
+		for (Alien alien: aliensList.getAliens()) {
+			gameDraw.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
 		}
 		// Draw Bonus
 		for (int i = 0; i < bonus.size(); i++) {
-			Bonus b = bonus.get(i);
-			g.drawImage(b.getImage(), b.getX(), b.getY(), this);
+			Benefits b = bonus.get(i);
+			gameDraw.drawImage(b.getImage(), b.getX(), b.getY(), this);
 		}
 
-		g.setColor(Color.WHITE);
-		g.drawString("HEALTH: ", 5, 15);
+		gameDraw.setColor(Color.WHITE);
+		gameDraw.drawString("HEALTH: ", 5, 15);
 		for (int i = 1; i <= lifeSpaceship.getLifeSpaceship(); i++) {
-			g.drawImage(lifeSpaceship.getImage(), i*22 - 17, 20, this);
+			gameDraw.drawImage(lifeSpaceship.getImage(), i * 22 - 17, 20, this);
 		}
-		
-		g.drawString(("SCORE: " + spaceship.getScore()), 5, 470);
+
+		gameDraw.drawString(("SCORE: " + spaceship.getScore()), 5, 470);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		checkCollide();
+		handleCollisions();
 		updateSpaceship();
 		updateMissile();
 		updateAlien();
@@ -212,101 +222,121 @@ public class Map extends JPanel implements ActionListener {
 	public void restartHealth() {
 		lifeSpaceship.setLifeSpaceship(3);
 	}
+	
+	public void handleCollisions() {
+		collisionActionTransition_spaceship_alien();
+		collisionActionTransition_spaceship_benefit();
+		collisionActionTransition_laser_alien();
+		collisionActionTransition_laser_benefit();
+	}
 
 	private boolean checkCollisionGenericFunction(Rectangle agentForm, Rectangle passiveAgentForm) {
-		
+
 		/*
 		 * agent : the agent instance is who are doing the collision
 		 * 
 		 * passiveAgent: who receives the collision
-		 * 	 
+		 * 
 		 */
-		
-		if(agentForm.intersects(passiveAgentForm))
+
+		if (agentForm.intersects(passiveAgentForm))
 			return true;
 		return false;
 	}
-	
+
 	private void collisionActionTransition_spaceship_alien() {
-		
+
 		/*
-		 * If collision
-		 * generate explosion
-		 * then
-		 * deduct spaceship life
-		 * remove alien
-		 * and finally
-		 * turn spaceship invulnerable for 2 sec;
-		 * */
+		 * If collision generate explosion then deduct spaceship life remove alien and
+		 * finally turn spaceship invulnerable for 2 seconds {TODO};
+		 */
 
 		Rectangle spaceshipForm = spaceship.getBounds();
 		Rectangle alienForm;
-		
-		for (Alien alien: aliens.getAliens()) {
+
+		for (Alien alien : aliensList.getAliens()) {
 			alienForm = alien.getBounds();
-		
-			if(checkCollisionGenericFunction(alienForm, spaceshipForm)) {
+
+			if (checkCollisionGenericFunction(alienForm, spaceshipForm)) {
 				alien.isBlowingUp();
+				alien.setVisible(false);
 			}
 		}
-		
-		
 	}
-		
-//		Rectangle spaceshipForm = spaceship.getBounds();
-//		Rectangle missileForm;
-//		Rectangle alienForm;
-//		Rectangle bonusForm;
-//
-//		for (int i = 0; i < aliens.size(); i++) {
-//			Alien tempAlien = aliens.get(i);
-//			alienForm = tempAlien.getBounds();
-//			
-//			if (spaceshipForm.intersects(alienForm)) {
-//				if (lifeSpaceship.getLifeSpaceship()== 1) {
-//					inGame = false;
-//				} else {
-//					lifeSpaceship.setLifeSpaceship(lifeSpaceship.getLifeSpaceship() - 1);
-//					tempAlien.setVisible(false);
-//				}
-//			}
-//		}
-//
-//		List<Missile> missile = spaceship.getMissile();
-//		
-//		for (int i = 0; i < missile.size(); i++) {
-//			
-//			Missile tempMissile = missile.get(i);
-//			
-//			missileForm = tempMissile.getBounds();
-//
-//			for (int j = 0; j < aliens.size(); j++) {
-//				Alien tempAlien = aliens.get(j);
-//				alienForm = tempAlien.getBounds();
-//
-//				if (missileForm.intersects(alienForm)) {
-//					tempAlien.explosion = 1;
-//					if(tempAlien.explosion == 1) {
-//						tempAlien.alienExplosion();
-//					}
-//					spaceship.setScore(spaceship.getScore() + 100);
-//					tempAlien.setVisible(false);
-//					tempMissile.setVisible(false);
-//				}
-//			}
-//			for (int k = 0; k < bonus.size(); k++) {
-//				Bonus tempBonus = bonus.get(k);
-//				bonusForm = tempBonus.getBounds();
-//
-//				if (missileForm.intersects(bonusForm)) {
-//					spaceship.setScore(spaceship.getScore() + 50);
-//					tempBonus.setVisible(false);
-//					tempMissile.setVisible(false);
-//				}
-//			}
-//
-//		}
-//	}
+	
+	private void collisionActionTransition_spaceship_benefit() {
+
+		/*
+		 * If collision generate explosion then deduct spaceship life remove alien and
+		 * finally turn spaceship invulnerable for 2 seconds {TODO};
+		 */
+
+		Rectangle spaceshipForm = spaceship.getBounds();
+		Rectangle benefitForm;
+
+		for (Benefits benefit : benefitsList.getBenefits()) {
+			benefitForm = benefit.getBounds();
+
+			if (checkCollisionGenericFunction(spaceshipForm, benefitForm)) {
+				benefit.setVisible(false);
+				spaceship.setScore(spaceship.getScore() + 100);
+			}
+		}
+	}
+
+
+	private void collisionActionTransition_laser_alien() {
+
+		/*
+		 * If collision generate explosion then remove alien and
+		 * remove laser;
+		 */
+
+		Rectangle laserForm;
+		Rectangle alienForm;
+
+		for (Laser laser: laserList.getLaserList()) {
+			laserForm = laser.getBounds();
+			
+			for(Alien alien: aliensList.getAliens()) {
+				alienForm = alien.getBounds();
+				
+				if (checkCollisionGenericFunction(laserForm, alienForm)) {
+					alien.isBlowingUp();
+					alien.setVisible(false);
+					laser.setVisible(false);
+					spaceship.setScore(spaceship.getScore() + 100);
+				}				
+			}
+
+		}
+	}
+	
+	private void collisionActionTransition_laser_benefit() {
+
+		/*
+		 * If collision generate explosion then remove alien and
+		 * remove laser;
+		 */
+
+		Rectangle laserForm;
+		Rectangle benefitForm;
+
+		for (Laser laser: laserList.getLaserList()) {
+			laserForm = laser.getBounds();
+			
+			for(Benefits benefit: benefitsList.getBenefits()) {
+				benefitForm = benefit.getBounds();
+				
+				if (checkCollisionGenericFunction(laserForm, benefitForm)) {
+					benefit.setVisible(false);
+					laser.setVisible(false);
+					spaceship.setScore(spaceship.getScore() + 100);
+				}				
+			}
+
+		}
+	}
 
 	public void generateAliens() {
 		Random randomic = new Random();
@@ -323,7 +353,7 @@ public class Map extends JPanel implements ActionListener {
 		for (int i = 0; i < level.getBonusCount(); i++) {
 			int x = Math.abs(randomic.nextInt(Game.getWidth()));
 			int y = -500 + Math.abs(randomic.nextInt(Game.getHeight()));
-			bonus.add(new Bonus(x, y, "images/bonus.png"));
+			bonus.add(new Benefits(x, y, "images/bonus.png"));
 		}
 	}
 
@@ -332,9 +362,9 @@ public class Map extends JPanel implements ActionListener {
 	}
 
 	private void updateMissile() {
-		List<Missile> missile = spaceship.getMissile();
+		List<Laser> missile = spaceship.getMissile();
 		for (int i = 0; i < missile.size(); i++) {
-			Missile m = (Missile) missile.get(i);
+			Laser m = (Laser) missile.get(i);
 			if (m.isVisible()) {
 				m.missileMoviment();
 			} else {
@@ -356,7 +386,7 @@ public class Map extends JPanel implements ActionListener {
 
 	private void updateBonus() {
 		for (int i = 0; i < bonus.size(); i++) {
-			Bonus b = (Bonus) bonus.get(i);
+			Benefits b = (Benefits) bonus.get(i);
 			if (b.isVisible()) {
 				b.bonusMoviment();
 			} else {

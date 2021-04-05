@@ -36,5 +36,24 @@ public class Alien extends Sprite {
 	public int getAlienSpeed() {
 		return alien_speed;
 	}
+	
+	@Override
+	public int getX() {
+		return positionX;
+	}
+
+	@Override
+	public int getY() {
+		return positionY;
+	}
+	
+	@Override
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
 
 }
